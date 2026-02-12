@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚔️ Tracker Completo - Pretemporada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 15px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 0.95em;
+            opacity: 0.9;
+            color: #ff6b6b;
+        }
+        
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.08);
+            color: #adb5bd;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            color: #adb5bd;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .ready-indicator {
+            grid-column: span 2;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .ready-yes {
+            background: rgba(40, 167, 69, 0.2);
+            border: 2px solid #28a745;
+            color: #28a745;
+        }
+        
+        .ready-no {
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid #dc3545;
+            color: #dc3545;
+        }
+        
+        /* Cuero Pelado SOP Section */
+        .sop-section {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 25px;
+        }
+        
+        .sop-section h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .sop-motto {
+            text-align: center;
+            font-style: italic;
+            color: #adb5bd;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        
+        .sop-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .sop-item h3 {
+            color: #ffd700;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        
+        .sop-item p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        
+        .sop-highlight {
+            background: rgba(255, 215, 0, 0.15);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .sop-highlight strong {
+            color: #ffd700;
+        }
+        
+        .alert-red {
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid #dc3545;
+            color: #dc3545;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .alert-red h4 {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* Trade Form */
+        .trade-form {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 25px;
+        }
+        
+        .trade-form h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .checklist-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 0.9em;
+            color: #ffd700;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .check-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .check-item:active {
+            transform: scale(0.98);
+        }
+        
+        .check-item.checked {
+            background: rgba(40, 167, 69, 0.2);
+            border-color: #28a745;
+        }
+        
+        .check-box {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #6c757d;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .check-item.checked .check-box {
+            background: #28a745;
+            border-color: #28a745;
+        }
+        
+        .check-label {
+            flex-grow: 1;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        .wl-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .wl-btn {
+            padding: 15px;
+            border: 2px solid;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .wl-btn.win {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .wl-btn.loss {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .wl-btn.selected {
+            transform: scale(1.05);
+        }
+        
+        .wl-btn.win.selected {
+            background: #28a745;
+            color: white;
+        }
+        
+        .wl-btn.loss.selected {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .score-display .label {
+            font-size: 0.9em;
+            color: #adb5bd;
+            margin-bottom: 8px;
+        }
+        
+        .score-display .value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #ffd700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+        
+        /* Killers Section */
+        .killers-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .killer-card {
+            background: rgba(40, 167, 69, 0.1);
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .killer-card:active {
+            transform: scale(0.98);
+            background: rgba(40, 167, 69, 0.2);
+        }
+        
+        .killer-text {
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+        
+        .killer-title {
+            font-weight: 600;
+            color: #28a745;
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+        
+        .killer-desc {
+            font-size: 0.85em;
+            color: #adb5bd;
+        }
+        
+        .killer-count {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #28a745;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        /* History */
+        .history {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .history h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .trade-num {
+            font-weight: 600;
+            color: #fff;
+            margin-right: 8px;
+        }
+        
+        .result {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        
+        .result.win {
+            background: #28a745;
+            color: white;
+        }
+        
+        .result.loss {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .score-badge {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .score-perfect {
+            background: #ffd700;
+            color: #1a1a2e;
+        }
+        
+        .score-good {
+            background: #28a745;
+            color: white;
+        }
+        
+        .score-ok {
+            background: #ffc107;
+            color: #1a1a2e;
+        }
+        
+        .score-bad {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .date {
+            font-size: 0.85em;
+            color: #adb5bd;
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: transform 0.2s;
+        }
+        
+        .delete-btn:active {
+            transform: scale(0.9);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #adb5bd;
+        }
+        
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚔️ Tracker Completo</h1>
+            <p>"No entrenamos para golpear, entrenamos para no ser golpeados"</p>
+        </div>
+        
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('sop')">
+                📖 SOP
+            </button>
+            <button class="tab-btn" onclick="switchTab('tracker')">
+                📊 Tracker
+            </button>
+        </div>
+        
+        <!-- TAB 1: SOP CUERO PELADO -->
+        <div id="sopTab" class="tab-content active">
+            <div class="sop-section">
+                <h2>⚔️ CUERO PELADO 3.2</h2>
+                <div class="sop-motto">
+                    "No entrenamos para golpear, entrenamos para no ser golpeados"
+                </div>
+                
+                <!-- 1. BLINDAJE FINANCIERO -->
+                <div class="sop-item">
+                    <h3>1. EL BLINDAJE FINANCIERO</h3>
+                    <p>Con tu cuenta de <strong>50k</strong>:</p>
+                    <div class="sop-highlight">
+                        <p><strong>Calibre:</strong> 0.25 lotes</p>
+                        <p><strong>Impacto Base (0.25%):</strong> $125 → 1.25 puntos</p>
+                        <p><strong>Muro de Contención:</strong> $250.00 USD (0.50%) diarios máximo</p>
+                    </div>
+                </div>
+                
+                <!-- 2. CICLO DE CAZA -->
+                <div class="sop-item">
+                    <h3>2. EL CICLO DE CAZA (La hora del Oro)</h3>
+                    <p>El Oro es un animal de costumbres.</p>
+                    <p><strong>Tu ventana:</strong> 1 hora antes de la apertura</p>
+                    <div class="sop-highlight">
+                        <p><strong>La Inducción:</strong> El precio atrae a los débiles</p>
+                        <p><strong>La Barrida (Sweep):</strong> Limpia stops por encima/debajo</p>
+                        <p><strong>El Desplazamiento:</strong> Movimiento institucional real</p>
+                    </div>
+                </div>
+                
+                <!-- 3. EJECUCIÓN QUIRÚRGICA -->
+                <div class="sop-item">
+                    <h3>3. LA EJECUCIÓN QUIRÚRGICA</h3>
+                    <p><strong>Paso 1:</strong> Identificar la dirección institucional</p>
+                    <p><strong>Paso 2:</strong> Esperar el CHoCH (Change of Character)</p>
+                    <p><strong>Paso 3:</strong> Buscar zonas de entrada:</p>
+                    <div class="sop-highlight">
+                        <p>• FVG (Fair Value Gap)</p>
+                        <p>• OB (Order Block)</p>
+                    </div>
+                    <p><strong>Paso 4:</strong> Ejecutar</p>
+                    <div class="sop-highlight">
+                        <p><strong>Entrada:</strong> En la zona confirmada</p>
+                        <p><strong>Stop Loss:</strong> Debajo/encima del swing</p>
+                        <p><strong>Take Profit:</strong> 1:3 mínimo</p>
+                    </div>
+                </div>
+                
+                <!-- 4. GESTIÓN HANDS-OFF -->
+                <div class="sop-item">
+                    <h3>4. GESTIÓN "HANDS-OFF"</h3>
+                    <p>Una vez que el trade está activo, solo hay tres destinos:</p>
+                    <div class="sop-highlight">
+                        <p><strong>Stop Loss:</strong> Pérdida controlada</p>
+                        <p><strong>Breakeven (1:2):</strong> Acá ya no podés perder</p>
+                        <p><strong>Take Profit:</strong> Victoria completa</p>
+                    </div>
+                </div>
+                
+                <!-- 5. ALERTAS ROJAS -->
+                <div class="alert-red">
+                    <h4>⚠️ ALERTAS ROJAS - Contrato FundingPips Zero</h4>
+                    <p><strong>Noticias:</strong> NO se entra</p>
+                    <p><strong>Consistencia:</strong> Es lo único que importa</p>
+                    <p><strong>Margen:</strong> Solo ORO</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TAB 2: TRACKER -->
+        <div id="trackerTab" class="tab-content">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Trades</div>
+                    <div class="stat-value" id="totalTrades">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Score Promedio</div>
+                    <div class="stat-value" id="avgScore">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Trades 8+/9</div>
+                    <div class="stat-value" id="goodTrades">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                </div>
+                <div id="readyIndicator" class="ready-indicator">
+                    Comenzá tu primer trade
+                </div>
+            </div>
+            
+            <!-- Trade Form -->
+            <div class="trade-form">
+                <h2>✅ Checklist Pre-Trade</h2>
+                
+                <!-- Análisis -->
+                <div class="checklist-section">
+                    <div class="section-title">📊 Análisis</div>
+                    <div class="check-item" onclick="toggleCheck(1)">
+                        <div class="check-box" id="box1"></div>
+                        <div class="check-label">1. Identifiqué la dirección institucional (HTF)</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(2)">
+                        <div class="check-box" id="box2"></div>
+                        <div class="check-label">2. Esperé CHoCH confirmado</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(3)">
+                        <div class="check-box" id="box3"></div>
+                        <div class="check-label">3. Marqué FVG o OB limpio</div>
+                    </div>
+                </div>
+                
+                <!-- Ejecución -->
+                <div class="checklist-section">
+                    <div class="section-title">🎯 Ejecución</div>
+                    <div class="check-item" onclick="toggleCheck(4)">
+                        <div class="check-box" id="box4"></div>
+                        <div class="check-label">4. Entré SOLO en la zona</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(5)">
+                        <div class="check-box" id="box5"></div>
+                        <div class="check-label">5. SL debajo/encima del swing</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(6)">
+                        <div class="check-box" id="box6"></div>
+                        <div class="check-label">6. RR mínimo 1:3</div>
+                    </div>
+                </div>
+                
+                <!-- Disciplina -->
+                <div class="checklist-section">
+                    <div class="section-title">🛡️ Disciplina</div>
+                    <div class="check-item" onclick="toggleCheck(7)">
+                        <div class="check-box" id="box7"></div>
+                        <div class="check-label">7. Sin noticias activas</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(8)">
+                        <div class="check-box" id="box8"></div>
+                        <div class="check-label">8. Ventana horaria correcta (1h antes apertura)</div>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(9)">
+                        <div class="check-box" id="box9"></div>
+                        <div class="check-label">9. Calibre 0.25 / Max pérdida $250</div>
+                    </div>
+                </div>
+                
+                <!-- Score Display -->
+                <div class="score-display">
+                    <div class="label">Score Actual</div>
+                    <div class="value" id="currentScore">0/9</div>
+                </div>
+                
+                <!-- Win/Loss Selector -->
+                <div class="wl-selector">
+                    <button id="winBtn" class="wl-btn win" onclick="selectResult('win')">
+                        ✅ WIN
+                    </button>
+                    <button id="lossBtn" class="wl-btn loss" onclick="selectResult('loss')">
+                        ❌ LOSS
+                    </button>
+                </div>
+                
+                <!-- Action Buttons -->
+                <button class="btn btn-primary" onclick="saveTrade()">
+                    💾 Guardar Trade
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    Limpiar
+                </button>
+            </div>
+            
+            <!-- Killers -->
+            <div class="killers-grid">
+                <div class="killer-card" onclick="addKiller(1)">
+                    <div class="killer-text">
+                        <div class="killer-title">🛡️ Killer 1</div>
+                        <div class="killer-desc">NO entrar sin confirmación</div>
+                    </div>
+                    <div class="killer-count" id="killer1">0</div>
+                </div>
+                <div class="killer-card" onclick="addKiller(2)">
+                    <div class="killer-text">
+                        <div class="killer-title">🎯 Killer 2</div>
+                        <div class="killer-desc">NO perseguir el precio</div>
+                    </div>
+                    <div class="killer-count" id="killer2">0</div>
+                </div>
+                <div class="killer-card" onclick="addKiller(3)">
+                    <div class="killer-text">
+                        <div class="killer-title">⚔️ Killer 3</div>
+                        <div class="killer-desc">RESPETAR el Stop Loss</div>
+                    </div>
+                    <div class="killer-count" id="killer3">0</div>
+                </div>
+            </div>
+            
+            <!-- History -->
+            <div class="history">
+                <h2>📊 Historial de Trades</h2>
+                <div id="historyList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>Todavía no hay trades registrados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let trades = [];
+        let currentChecks = [false, false, false, false, false, false, false, false, false];
+        let currentResult = null;
+        let killers = [0, 0, 0];
+        let currentTab = 'sop';
+        
+        // Switch tabs
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (tab === 'sop') {
+                document.getElementById('sopTab').classList.add('active');
+            } else {
+                document.getElementById('trackerTab').classList.add('active');
+            }
+        }
+        
+        // Load data
+        function loadData() {
+            const saved = localStorage.getItem('pretemporada_trades');
+            if (saved) {
+                trades = JSON.parse(saved);
+            }
+            const savedKillers = localStorage.getItem('pretemporada_killers');
+            if (savedKillers) {
+                killers = JSON.parse(savedKillers);
+            }
+            updateUI();
+        }
+        
+        // Save data
+        function saveData() {
+            localStorage.setItem('pretemporada_trades', JSON.stringify(trades));
+            localStorage.setItem('pretemporada_killers', JSON.stringify(killers));
+        }
+        
+        // Toggle check
+        function toggleCheck(num) {
+            currentChecks[num - 1] = !currentChecks[num - 1];
+            const item = document.querySelector(`#box${num}`).parentElement;
+            const box = document.getElementById(`box${num}`);
+            
+            if (currentChecks[num - 1]) {
+                item.classList.add('checked');
+                box.innerHTML = '✓';
+            } else {
+                item.classList.remove('checked');
+                box.innerHTML = '';
+            }
+            
+            updateCurrentScore();
+        }
+        
+        // Update current score
+        function updateCurrentScore() {
+            const score = currentChecks.filter(c => c).length;
+            document.getElementById('currentScore').textContent = `${score}/9`;
+        }
+        
+        // Select result
+        function selectResult(result) {
+            currentResult = result;
+            document.getElementById('winBtn').classList.remove('selected');
+            document.getElementById('lossBtn').classList.remove('selected');
+            
+            if (result === 'win') {
+                document.getElementById('winBtn').classList.add('selected');
+            } else {
+                document.getElementById('lossBtn').classList.add('selected');
+            }
+        }
+        
+        // Save trade
+        function saveTrade() {
+            const score = currentChecks.filter(c => c).length;
+            
+            if (currentResult === null) {
+                alert('⚠️ Seleccioná si fue WIN o LOSS');
+                return;
+            }
+            
+            const trade = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                checks: [...currentChecks],
+                score: score,
+                result: currentResult
+            };
+            
+            trades.push(trade);
+            saveData();
+            resetForm();
+            updateUI();
+            
+            // Show feedback
+            const msg = score === 9 ? '🏆 ¡PERFECTO! 9/9' :
+                       score >= 8 ? '💪 ¡EXCELENTE! ' + score + '/9' :
+                       score >= 7 ? '👍 Aceptable ' + score + '/9' :
+                       '⚠️ Mejorable ' + score + '/9';
+            
+            const tempAlert = document.createElement('div');
+            tempAlert.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 15px 25px; border-radius: 10px; z-index: 9999; font-weight: 600;';
+            tempAlert.textContent = msg;
+            document.body.appendChild(tempAlert);
+            setTimeout(() => tempAlert.remove(), 2000);
+        }
+        
+        // Reset form
+        function resetForm() {
+            currentChecks = [false, false, false, false, false, false, false, false, false];
+            currentResult = null;
+            
+            for (let i = 1; i <= 9; i++) {
+                const item = document.querySelector(`#box${i}`).parentElement;
+                const box = document.getElementById(`box${i}`);
+                item.classList.remove('checked');
+                box.innerHTML = '';
+            }
+            
+            document.getElementById('winBtn').classList.remove('selected');
+            document.getElementById('lossBtn').classList.remove('selected');
+            updateCurrentScore();
+        }
+        
+        // Add killer
+        function addKiller(num) {
+            killers[num - 1]++;
+            document.getElementById(`killer${num}`).textContent = killers[num - 1];
+            saveData();
+            
+            const messages = [
+                '🛡️ ¡Bien! NO entraste sin confirmación',
+                '👏 ¡Perfecto! NO perseguiste el precio',
+                '💪 ¡Excelente! Respetaste el SL'
+            ];
+            
+            const tempAlert = document.createElement('div');
+            tempAlert.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 15px 25px; border-radius: 10px; z-index: 9999; font-weight: 600;';
+            tempAlert.textContent = messages[num - 1];
+            document.body.appendChild(tempAlert);
+            setTimeout(() => tempAlert.remove(), 2000);
+        }
+        
+        // Delete trade
+        function deleteTrade(id) {
+            if (confirm('¿Eliminar este trade?')) {
+                trades = trades.filter(t => t.id !== id);
+                saveData();
+                updateUI();
+            }
+        }
+        
+        // Update UI
+        function updateUI() {
+            // Update killers
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`killer${i}`).textContent = killers[i - 1];
+            }
+            
+            // Update stats
+            const total = trades.length;
+            document.getElementById('totalTrades').textContent = total;
+            
+            if (total === 0) {
+                document.getElementById('avgScore').textContent = '-';
+                document.getElementById('goodTrades').textContent = '0';
+                document.getElementById('winRate').textContent = '0%';
+                document.getElementById('readyIndicator').className = 'ready-indicator';
+                document.getElementById('readyIndicator').textContent = 'Comenzá tu primer trade';
+                
+                document.getElementById('historyList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>Todavía no hay trades registrados</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const avgScore = (trades.reduce((sum, t) => sum + t.score, 0) / total).toFixed(1);
+            const goodTrades = trades.filter(t => t.score >= 8).length;
+            const wins = trades.filter(t => t.result === 'win').length;
+            const winRate = ((wins / total) * 100).toFixed(0);
+            
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('goodTrades').textContent = goodTrades;
+            document.getElementById('winRate').textContent = winRate + '%';
+            
+            // Ready indicator
+            const ready = goodTrades >= 25 && parseFloat(avgScore) >= 8.0;
+            const indicator = document.getElementById('readyIndicator');
+            
+            if (ready) {
+                indicator.className = 'ready-indicator ready-yes';
+                indicator.textContent = '✅ LISTO PARA FUNDINGPIPS';
+            } else {
+                indicator.className = 'ready-indicator ready-no';
+                const needed = Math.max(0, 25 - goodTrades);
+                indicator.textContent = `❌ Faltan ${needed} trades 8+/9`;
+            }
+            
+            // Update history
+            const historyHTML = trades.slice().reverse().map(trade => {
+                const scoreClass = trade.score === 9 ? 'score-perfect' :
+                                 trade.score >= 8 ? 'score-good' :
+                                 trade.score >= 7 ? 'score-ok' : 'score-bad';
+                
+                const date = new Date(trade.date);
+                const dateStr = date.toLocaleDateString('es-AR');
+                const tradeNum = trades.indexOf(trade) + 1;
+                
+                return `
+                    <div class="history-item">
+                        <div class="header-row">
+                            <div>
+                                <span class="trade-num">Trade #${tradeNum}</span>
+                                <span class="result ${trade.result}">${trade.result === 'win' ? 'W' : 'L'}</span>
+                            </div>
+                            <div>
+                                <span class="score-badge ${scoreClass}">${trade.score}/9</span>
+                                <button class="delete-btn" onclick="deleteTrade(${trade.id})">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="date">${dateStr}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('historyList').innerHTML = historyHTML;
+        }
+        
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
